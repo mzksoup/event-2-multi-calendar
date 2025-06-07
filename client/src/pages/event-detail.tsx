@@ -45,18 +45,18 @@ export default function EventDetail() {
     }
   };
 
-  const formatDateTime = (date: string, time: string, duration: number) => {
-    const eventDate = new Date(`${date}T${time}`);
-    const endDate = new Date(eventDate.getTime() + duration * 60 * 1000);
+  const formatDateTime = (date: string, startTime: string, endTime: string) => {
+    const startDate = new Date(`${date}T${startTime}`);
+    const endDate = new Date(`${date}T${endTime}`);
     
-    const dateStr = eventDate.toLocaleDateString('ja-JP', {
+    const dateStr = startDate.toLocaleDateString('ja-JP', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       weekday: 'long'
     });
     
-    const timeStr = `${eventDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}`;
+    const timeStr = `${startDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}`;
     
     return `${dateStr} ${timeStr}`;
   };
@@ -146,7 +146,7 @@ export default function EventDetail() {
                   <div className="flex items-start">
                     <Clock className="text-gray-400 mt-1 mr-3" size={20} />
                     <div>
-                      <span className="text-gray-700">{formatDateTime(event.date, event.time, event.duration)}</span>
+                      <span className="text-gray-700">{formatDateTime(event.date, event.startTime, event.endTime)}</span>
                     </div>
                   </div>
                   

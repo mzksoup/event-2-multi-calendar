@@ -41,13 +41,13 @@ export function generateOutlookUrl(event: CalendarEvent): string {
 export function createCalendarEvent(
   title: string,
   date: string,
-  time: string,
-  duration: number,
+  startTime: string,
+  endTime: string,
   description?: string,
   location?: string
 ): CalendarEvent {
-  const startDate = new Date(`${date}T${time}`);
-  const endDate = new Date(startDate.getTime() + (duration * 60 * 1000));
+  const startDate = new Date(`${date}T${startTime}`);
+  const endDate = new Date(`${date}T${endTime}`);
 
   return {
     title,

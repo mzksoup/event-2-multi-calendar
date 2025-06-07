@@ -21,13 +21,16 @@ export default function CalendarSelection() {
     enabled: !!shareId,
   });
 
-  const formatDateTime = (date: string, time: string) => {
-    const eventDate = new Date(`${date}T${time}`);
-    return eventDate.toLocaleDateString('ja-JP', {
+  const formatDateTime = (date: string, startTime: string, endTime: string) => {
+    const startDate = new Date(`${date}T${startTime}`);
+    const endDate = new Date(`${date}T${endTime}`);
+    const dateStr = startDate.toLocaleDateString('ja-JP', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    }) + ' ' + eventDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+    });
+    const timeStr = `${startDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}`;
+    return `${dateStr} ${timeStr}`;
   };
 
   const handleGoogleCalendar = () => {
@@ -36,8 +39,8 @@ export default function CalendarSelection() {
     const calendarEvent = createCalendarEvent(
       event.title,
       event.date,
-      event.time,
-      event.duration,
+      event.startTime,
+      event.endTime,
       event.description || undefined,
       event.location || undefined
     );
@@ -74,8 +77,8 @@ export default function CalendarSelection() {
     const calendarEvent = createCalendarEvent(
       event.title,
       event.date,
-      event.time,
-      event.duration,
+      event.startTime,
+      event.endTime,
       event.description || undefined,
       event.location || undefined
     );
@@ -174,7 +177,7 @@ export default function CalendarSelection() {
                   <CalendarPlus className="mr-2" size={16} />
                   <span>{event.title}</span>
                   <span className="mx-2">•</span>
-                  <span>{formatDateTime(event.date, event.time)}</span>
+                  <span>{formatDateTime(event.date, event.startTime, event.endTime)}</span>
                 </div>
               </div>
 
