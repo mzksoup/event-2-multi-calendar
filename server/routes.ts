@@ -91,7 +91,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Generated ICS content:", icsContent);
 
       res.setHeader('Content-Type', 'text/calendar');
-      res.setHeader('Content-Disposition', `attachment; filename="${event.title}.ics"`);
       res.send(icsContent);
     } catch (error: any) {
       console.error("ICS generation error:", error);
