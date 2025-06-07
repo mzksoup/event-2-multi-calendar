@@ -46,19 +46,34 @@ export default function EventDetail() {
   };
 
   const formatDateTime = (date: string, startTime: string, endTime: string) => {
-    const startDate = new Date(`${date}T${startTime}:00`);
-    const endDate = new Date(`${date}T${endTime}:00`);
-    
-    const dateStr = startDate.toLocaleDateString('ja-JP', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long'
-    });
-    
-    const timeStr = `${startDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}`;
-    
-    return `${dateStr} ${timeStr}`;
+    try {
+      // Ensure proper time format
+      const normalizeTime = (time: string) => {
+        if (!time) return '00:00:00';
+        return time.includes(':') && time.split(':').length === 2 ? `${time}:00` : time;
+      };
+
+      const startDate = new Date(`${date}T${normalizeTime(startTime)}`);
+      const endDate = new Date(`${date}T${normalizeTime(endTime)}`);
+      
+      // Validate dates
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        return `${date} ${startTime} - ${endTime}`;
+      }
+      
+      const dateStr = startDate.toLocaleDateString('ja-JP', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      });
+      
+      const timeStr = `${startDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} - ${endDate.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}`;
+      
+      return `${dateStr} ${timeStr}`;
+    } catch (error) {
+      return `${date} ${startTime} - ${endTime}`;
+    }
   };
 
   if (isLoading) {

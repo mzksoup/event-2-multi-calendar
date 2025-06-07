@@ -46,8 +46,18 @@ export function createCalendarEvent(
   description?: string,
   location?: string
 ): CalendarEvent {
-  const startDate = new Date(`${date}T${startTime}:00`);
-  const endDate = new Date(`${date}T${endTime}:00`);
+  // Add seconds if not present in time format
+  const normalizeTime = (time: string) => {
+    return time.includes(':') && time.split(':').length === 2 ? `${time}:00` : time;
+  };
+
+  const startDate = new Date(`${date}T${normalizeTime(startTime)}`);
+  const endDate = new Date(`${date}T${normalizeTime(endTime)}`);
+
+  // Validate dates
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error(`Invalid date/time: ${date} ${startTime}-${endTime}`);
+  }
 
   return {
     title,

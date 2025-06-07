@@ -83,7 +83,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'END:VCALENDAR'
       ].filter(line => line !== '').join('\r\n');
 
-      res.setHeader('Content-Type', 'text/calendar');
+      res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename="${event.title}.ics"`);
+      res.setHeader('Cache-Control', 'no-cache');
       res.send(icsContent);
     } catch (error: any) {
       res.status(500).json({ 
