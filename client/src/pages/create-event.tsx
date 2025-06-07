@@ -21,6 +21,12 @@ const extendedEventSchema = insertEventSchema.extend({
     today.setHours(0, 0, 0, 0);
     return selected >= today;
   }, "日付は今日以降を選択してください"),
+}).refine((data) => {
+  if (!data.startTime || !data.endTime) return true;
+  return data.endTime > data.startTime;
+}, {
+  message: "終了時間は開始時間より後に設定してください",
+  path: ["endTime"],
 });
 
 export default function CreateEvent() {
@@ -33,8 +39,8 @@ export default function CreateEvent() {
       title: "",
       description: "",
       date: "",
-      time: "",
-      duration: 60,
+      startTime: "",
+      endTime: "",
       location: "",
     },
   });
@@ -129,6 +135,7 @@ export default function CreateEvent() {
                             placeholder="予定の詳細を入力してください"
                             rows={4}
                             {...field}
+                            value={field.value || ""}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                           />
                         </FormControl>
@@ -137,32 +144,33 @@ export default function CreateEvent() {
                     )}
                   />
 
-                  {/* Date and Time */}
+                  {/* Date */}
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                          日付 <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="date"
+                            {...field}
+                            value={field.value || defaultDate}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Start Time and End Time */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
-                      name="date"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
-                            日付 <span className="text-red-500">*</span>
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              {...field}
-                              value={field.value || defaultDate}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="time"
+                      name="startTime"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
@@ -180,35 +188,28 @@ export default function CreateEvent() {
                         </FormItem>
                       )}
                     />
-                  </div>
 
-                  {/* Duration */}
-                  <FormField
-                    control={form.control}
-                    name="duration"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
-                          所要時間（分）
-                        </FormLabel>
-                        <Select value={field.value?.toString()} onValueChange={(value) => field.onChange(parseInt(value))}>
+                    <FormField
+                      control={form.control}
+                      name="endTime"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                            終了時間 <span className="text-red-500">*</span>
+                          </FormLabel>
                           <FormControl>
-                            <SelectTrigger className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                              <SelectValue />
-                            </SelectTrigger>
+                            <Input
+                              type="time"
+                              {...field}
+                              value={field.value || "15:00"}
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            />
                           </FormControl>
-                          <SelectContent>
-                            <SelectItem value="30">30分</SelectItem>
-                            <SelectItem value="60">1時間</SelectItem>
-                            <SelectItem value="90">1.5時間</SelectItem>
-                            <SelectItem value="120">2時間</SelectItem>
-                            <SelectItem value="180">3時間</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   {/* Location */}
                   <FormField
@@ -223,6 +224,7 @@ export default function CreateEvent() {
                           <Input
                             placeholder="例：会議室A、Zoom、東京オフィス"
                             {...field}
+                            value={field.value || ""}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                           />
                         </FormControl>

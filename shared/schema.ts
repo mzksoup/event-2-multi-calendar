@@ -7,8 +7,8 @@ export const events = pgTable("events", {
   title: text("title").notNull(),
   description: text("description"),
   date: text("date").notNull(), // YYYY-MM-DD format
-  time: text("time").notNull(), // HH:MM format
-  duration: integer("duration").notNull().default(60), // duration in minutes
+  startTime: text("start_time").notNull(), // HH:MM format
+  endTime: text("end_time").notNull(), // HH:MM format
   location: text("location"),
   shareId: text("share_id").notNull().unique(), // unique identifier for sharing
 });

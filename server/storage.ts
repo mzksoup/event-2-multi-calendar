@@ -23,7 +23,8 @@ export class MemStorage implements IStorage {
       ...insertEvent, 
       id, 
       shareId,
-      duration: insertEvent.duration || 60
+      description: insertEvent.description || null,
+      location: insertEvent.location || null
     };
     this.events.set(shareId, event);
     return event;
