@@ -121,29 +121,6 @@ export default function CreateEvent() {
                     )}
                   />
 
-                  {/* Event Description */}
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
-                          詳細説明
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="予定の詳細を入力してください"
-                            rows={4}
-                            {...field}
-                            value={field.value || ""}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
                   {/* Date */}
                   <FormField
                     control={form.control}
@@ -226,6 +203,29 @@ export default function CreateEvent() {
                             {...field}
                             value={field.value || ""}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Event Description */}
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                          詳細説明
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="予定の詳細を入力してください"
+                            rows={4}
+                            {...field}
+                            value={field.value || ""}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                           />
                         </FormControl>
                         <FormMessage />
