@@ -16,10 +16,14 @@ import { apiRequest } from "@/lib/queryClient";
 
 const extendedEventSchema = insertEventSchema.extend({
   date: insertEventSchema.shape.date.refine((date) => {
-    const selected = new Date(date + 'T00:00:00');
+    if (!date) return false;
+    const selectedDate = new Date(date);
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return selected >= today;
+    // 今日の日付を YYYY-MM-DD 形式で取得
+    const todayStr = today.getFullYear() + '-' + 
+      String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+      String(today.getDate()).padStart(2, '0');
+    return date >= todayStr;
   }, "日付は今日以降を選択してください"),
 }).refine((data) => {
   if (!data.startTime || !data.endTime) return true;
@@ -70,10 +74,11 @@ export default function CreateEvent() {
     createEventMutation.mutate(data);
   };
 
-  // Set default date to tomorrow
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const defaultDate = tomorrow.toISOString().split('T')[0];
+  // Set default date to today
+  const today = new Date();
+  const defaultDate = today.getFullYear() + '-' + 
+    String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+    String(today.getDate()).padStart(2, '0');
 
   return (
     <div className="min-h-screen bg-gray-50">
