@@ -46,16 +46,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/events/:shareId/ics", async (req, res) => {
     try {
       const { shareId } = req.params;
+      console.log("Generating ICS for shareId:", shareId);
+      
       const event = await storage.getEventByShareId(shareId);
+      console.log("Found event:", event);
       
       if (!event) {
         res.status(404).json({ message: "Event not found" });
         return;
       }
 
-      // Parse date and time
+      // Parse date and time with proper validation
       const startDate = new Date(`${event.date}T${event.startTime}:00`);
       const endDate = new Date(`${event.date}T${event.endTime}:00`);
+      
+      console.log("Parsed dates:", { startDate, endDate });
+
+      // Validate dates
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        throw new Error(`Invalid date/time: ${event.date} ${event.startTime}-${event.endTime}`);
+      }
 
       // Format dates for ICS (YYYYMMDDTHHMMSSZ)
       const formatICSDate = (date: Date) => {
@@ -78,11 +88,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'END:VCALENDAR'
       ].filter(line => line !== '').join('\r\n');
 
+      console.log("Generated ICS content:", icsContent);
+
       res.setHeader('Content-Type', 'text/calendar');
       res.setHeader('Content-Disposition', `attachment; filename="${event.title}.ics"`);
       res.send(icsContent);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to generate ICS file" });
+    } catch (error: any) {
+      console.error("ICS generation error:", error);
+      res.status(500).json({ 
+        message: "Failed to generate ICS file", 
+        error: error?.message || String(error)
+      });
     }
   });
 
