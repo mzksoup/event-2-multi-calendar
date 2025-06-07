@@ -16,7 +16,7 @@ import { apiRequest } from "@/lib/queryClient";
 
 const extendedEventSchema = insertEventSchema.extend({
   date: insertEventSchema.shape.date.refine((date) => {
-    const selected = new Date(date);
+    const selected = new Date(date + 'T00:00:00');
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return selected >= today;
