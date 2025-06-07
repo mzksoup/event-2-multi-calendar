@@ -54,8 +54,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Parse date and time
-      const startDate = new Date(`${event.date}T${event.startTime}`);
-      const endDate = new Date(`${event.date}T${event.endTime}`);
+      const startDate = new Date(`${event.date}T${event.startTime}:00`);
+      const endDate = new Date(`${event.date}T${event.endTime}:00`);
 
       // Format dates for ICS (YYYYMMDDTHHMMSSZ)
       const formatICSDate = (date: Date) => {

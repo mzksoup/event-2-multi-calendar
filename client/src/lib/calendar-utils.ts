@@ -46,8 +46,8 @@ export function createCalendarEvent(
   description?: string,
   location?: string
 ): CalendarEvent {
-  const startDate = new Date(`${date}T${startTime}`);
-  const endDate = new Date(`${date}T${endTime}`);
+  const startDate = new Date(`${date}T${startTime}:00`);
+  const endDate = new Date(`${date}T${endTime}:00`);
 
   return {
     title,

@@ -22,8 +22,8 @@ export default function CalendarSelection() {
   });
 
   const formatDateTime = (date: string, startTime: string, endTime: string) => {
-    const startDate = new Date(`${date}T${startTime}`);
-    const endDate = new Date(`${date}T${endTime}`);
+    const startDate = new Date(`${date}T${startTime}:00`);
+    const endDate = new Date(`${date}T${endTime}:00`);
     const dateStr = startDate.toLocaleDateString('ja-JP', {
       year: 'numeric',
       month: 'long',
