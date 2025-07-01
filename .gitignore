@@ -4,3 +4,92 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+
+# 環境変数
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ログ
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 実行時データ
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Istanbulなどのツールで使用されるカバレッジディレクトリ
+coverage/
+*.lcov
+
+# nycテストカバレッジ
+.nyc_output
+
+# 依存関係ディレクトリ
+jspm_packages/
+
+# オプションのnpmキャッシュディレクトリ
+.npm
+
+# オプションのREPL履歴
+.node_repl_history
+
+# 'npm pack'の出力
+*.tgz
+
+# Yarn整合性ファイル
+.yarn-integrity
+
+# dotenv環境変数ファイル
+.env.test
+
+# parcel-bundlerキャッシュ（https://parceljs.org/）
+.cache
+.parcel-cache
+
+# Next.jsビルド出力
+.next
+out
+
+# Nuxt.jsビルド/生成出力
+.nuxt
+
+# Storybookビルド出力
+.out
+.storybook-out
+
+# 一時フォルダ
+tmp/
+temp/
+
+# エディターディレクトリとファイル
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.swp
+*.swo
+*~
+
+# データベース
+db.sqlite3
+*.db
+*.sqlite
+*.sqlite3
+
+# Drizzleマイグレーション
+migrations/
+
+# TypeScriptキャッシュ
+*.tsbuildinfo
+
+# Turbo
+.turbo

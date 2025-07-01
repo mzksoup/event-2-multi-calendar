@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    container_name: calendar-app
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app:ro # ソースは読み取り専用
