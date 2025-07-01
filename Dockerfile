@@ -17,9 +17,9 @@ RUN npm run build
 FROM node:18-alpine AS production
 WORKDIR /usr/src/app
 
-# 本番依存のみインストール
+# 本番依存関係とdev依存関係も含めてインストール（サーバーがViteを使用するため）
 COPY package*.json ./
-RUN npm ci --production
+RUN npm ci
 
 # ビルド成果物をコピー
 COPY --from=builder /usr/src/app/dist ./dist
